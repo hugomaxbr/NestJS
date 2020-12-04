@@ -3,6 +3,7 @@ import { from } from 'rxjs';
 import { Task, TaskStatus } from './task.model';
 import * as uuid from 'uuid';
 import { CreatTaskDto } from './dto/createTask.dto';
+import { EditTaskDto } from './dto/editTask.dto';
 
 @Injectable()
 export class TasksService {
@@ -33,4 +34,10 @@ export class TasksService {
     const foundIndex = this.tasks.findIndex(task => task.id === found.id)
     return this.tasks.splice(foundIndex, 1);
   }
+
+  editTaskById(id : string, editTaskDto : EditTaskDto) {
+    const oldTask = this.getTaskById(id);
+    return this.tasks.forEach(task => task.id === oldTask.id ? { ...oldTask, task   } : task );
+  }
+
 }
