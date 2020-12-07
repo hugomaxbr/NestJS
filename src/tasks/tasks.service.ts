@@ -30,15 +30,17 @@ export class TasksService {
     return this.tasks.find((task) => task.id === id);
   }
 
-  getTasksWithFilters(filterDTO : GetTasksFilterDto) : Task[] {
-    const {status, search} = filterDTO;
+  getTasksWithFilters(filterDTO: GetTasksFilterDto): Task[] {
+    const { status, search } = filterDTO;
 
     let tasks = this.getAllTasks();
     if (status) {
-      tasks = tasks.filter(task => task.status === status);
+      tasks = tasks.filter((task) => task.status === status);
     }
-    if (search){
-      tasks = tasks.filter(task => task.title.includes(search)) || tasks.filter(task => task.description.includes(search))
+    if (search) {
+      tasks =
+        tasks.filter((task) => task.title.includes(search)) ||
+        tasks.filter((task) => task.description.includes(search));
     }
     return tasks;
   }
