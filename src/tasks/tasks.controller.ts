@@ -18,6 +18,7 @@ import { title } from 'process';
 import { CreatTaskDto } from './dto/createTask.dto';
 import { EditTaskDto } from './dto/editTask.dto';
 import { GetTasksFilterDto } from './dto/getTasksFilter.dto';
+import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipes';
 
 @Controller('tasks')
 export class TasksController {
@@ -43,14 +44,14 @@ export class TasksController {
     return this.tasksService.getTaskById(id);
   }
 
-  @Delete()
+  @Delete('/:id')
   deleteTaskById(@Param('id') id: string) {
     return this.tasksService.deleteTaskById(id);
   }
 
   @Patch('/:id/status')
   editStatusById(
-    @Body('taskStatus') taskStatus: TaskStatus,
+    @Body('taskStatus', TaskStatusValidationPipe) taskStatus: TaskStatus,
     @Param('id') id: string,
   ) {
     return this.tasksService.editStatusById(id, taskStatus);
