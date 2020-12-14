@@ -25,7 +25,7 @@ export class TasksController {
   //A injeção de dependência é feita assim no typescript, ela é feita pelo construtor.
   constructor(private tasksService: TasksService) {}
   @Get()
-  getTasks(@Query() filterDTO: GetTasksFilterDto): Task[] {
+  getTasks(@Query(ValidationPipe) filterDTO: GetTasksFilterDto): Task[] {
     if (Object.keys(filterDTO).length) {
       return this.tasksService.getTasksWithFilters(filterDTO);
     } else {
