@@ -20,7 +20,6 @@ import { EditTaskDto } from './dto/editTask.dto';
 import { GetTasksFilterDto } from './dto/getTasksFilter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipes';
 import { Task } from './task.entity';
-import { DeleteResult } from 'typeorm';
 import { TaskStatus } from './task-status.enum';
 
 @Controller('tasks')
