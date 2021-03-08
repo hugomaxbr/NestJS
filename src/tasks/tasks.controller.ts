@@ -9,20 +9,21 @@ import {
     ParseIntPipe,
     Patch,
     Post,
-    Put,
     Query,
+    UseGuards,
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/createTask.dto';
-import { EditTaskDto } from './dto/editTask.dto';
 import { GetTasksFilterDto } from './dto/getTasksFilter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipes';
 import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
     //A injeção de dependência é feita assim no typescript, ela é feita pelo construtor.
     constructor(private tasksService: TasksService) {}
