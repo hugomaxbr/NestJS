@@ -17,6 +17,7 @@ export class UserRepository extends Repository<User> {
         try {
             await user.save();
         } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const err = error.code; // Adicionar o error code nos logs de uma tabela no MongoDB
             if (error.code === '23505') {
                 // duplicate username
