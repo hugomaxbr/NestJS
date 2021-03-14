@@ -1,0 +1,8 @@
+db:
+    host: '192.168.0.111'
+    username: 'postgres'
+    password: 'docker'
+    synchronize: 'true'
+
+jwt:
+    secret: 'topSecret51'
