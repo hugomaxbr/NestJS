@@ -1,4 +1,4 @@
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, Logger } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials-dto';
 import { User } from './user.entity';
@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+    private logger = new Logger('UserRepository');
     async SignUp(AuthCredentialsDto: AuthCredentialsDto): Promise<void> {
         const { username, password } = AuthCredentialsDto;
 
@@ -17,12 +18,12 @@ export class UserRepository extends Repository<User> {
         try {
             await user.save();
         } catch (error) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const err = error.code; // Adicionar o error code nos logs de uma tabela no MongoDB
             if (error.code === '23505') {
                 // duplicate username
                 throw new ConflictException('Username already exists');
             }
+            this.logger.verbose(`Error code : ${err}`);
         }
     }
 

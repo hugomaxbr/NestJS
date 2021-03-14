@@ -5,6 +5,7 @@ import {
     Get,
     HttpCode,
     HttpStatus,
+    Logger,
     Param,
     ParseIntPipe,
     Patch,
@@ -27,6 +28,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
+    private logger = new Logger('TasksController');
     //A injeção de dependência é feita assim no typescript, ela é feita pelo construtor.
     constructor(private tasksService: TasksService) {}
 
@@ -37,6 +39,11 @@ export class TasksController {
         @GetUser()
         user: User
     ): Promise<Task[]> {
+        this.logger.verbose(
+            `User ${
+                user.username
+            } retrieving all tasks. \n Filters ${JSON.stringify(filterDTO)})`
+        );
         return this.tasksService.getTasks(filterDTO, user);
     }
 
@@ -47,6 +54,13 @@ export class TasksController {
         @GetUser()
         user: User
     ): Promise<Task> {
+        this.logger.verbose(
+            `User ${
+                user.username
+            } creating a new Task. \n Data: ${JSON.stringify({
+                createTaskDto,
+            })}`
+        );
         return this.tasksService.createTask(createTaskDto, user);
     }
 
