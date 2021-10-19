@@ -12,6 +12,6 @@
     "baseUrl": "./",
     "incremental": true,
     "allowJs": true,
-  }
-
+  },
+  "include": ["src", "migrations"]
 }

@@ -1,5 +1,5 @@
 import {
-    isString,
+    IsEmail,
     IsString,
     Matches,
     MaxLength,
@@ -11,6 +11,9 @@ export class AuthCredentialsDto {
     @MinLength(4)
     @MaxLength(20)
     username: string;
+
+    @IsEmail()
+    email: string;
 
     @IsString()
     @MinLength(8)

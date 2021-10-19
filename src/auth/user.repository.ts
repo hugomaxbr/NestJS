@@ -7,24 +7,22 @@ import * as bcrypt from 'bcrypt';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
     private logger = new Logger('UserRepository');
-    async SignUp(AuthCredentialsDto: AuthCredentialsDto): Promise<void> {
-        const { username, password } = AuthCredentialsDto;
+    async SignUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+        const { username, password, email } = authCredentialsDto;
 
         const user = new User();
+        user.email = email;
         user.username = username;
         user.salt = await bcrypt.genSalt();
         user.password = await this.hashPassword(password, user.salt);
 
-        try {
-            await user.save();
-        } catch (error) {
-            const err = error.code; // Adicionar o error code nos logs de uma tabela no MongoDB
-            if (error.code === '23505') {
-                // duplicate username
-                throw new ConflictException('Username already exists');
-            }
-            this.logger.verbose(`Error code : ${err}`);
+        const found = await this.findOne({ email: user.email });
+
+        if (!found) {
+            throw new ConflictException('email already registered');
         }
+
+        await user.save();
     }
 
     private async hashPassword(
@@ -37,11 +35,11 @@ export class UserRepository extends Repository<User> {
     async validateUserPassword(
         authCredentialsDto: AuthCredentialsDto
     ): Promise<string> {
-        const { username, password } = authCredentialsDto;
-        const user = await this.findOne({ username });
+        const { email, password } = authCredentialsDto;
+        const user = await this.findOne({ email });
 
         if (user && (await user.validatePassword(password))) {
-            return user.username;
+            return user.email;
         } else {
             return null;
         }
